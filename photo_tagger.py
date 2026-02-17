@@ -89,9 +89,10 @@ def tag_and_move_file(
     dest_root : str
         Root directory where tag folders will be created.
     copy : bool
-        If True the file is **copied** instead of moved so that each tag
-        folder gets its own copy.  The first tag always receives the
-        original move; subsequent tags receive copies.
+        If True the file is **copied** into every tag folder and the
+        original file is preserved.  If False (default) the file is
+        **moved** into the first tag's folder; subsequent tags receive
+        copies from that new location.
     record_path : str | None
         Path to the JSON record file.  ``None`` disables recording.
 
@@ -128,6 +129,9 @@ def tag_and_move_file(
                 dest_path = os.path.join(tag_dir, f"{stem}_{counter}{suffix}")
                 counter += 1
 
+        # When copy=True every tag gets a copy.  When copy=False the
+        # first tag (idx==0) receives a move; later tags copy from the
+        # moved location so the file still ends up in all tag folders.
         if copy or idx > 0:
             shutil.copy2(filepath, dest_path)
         else:
