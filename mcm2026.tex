@@ -1,0 +1,264 @@
+\documentclass{mcmthesis} % 调整数字以改动字体大小
+\mcmsetup{CTeX = false,    % 使用 CTeX 套装时，设置为 true
+          tcn = 2602746, problem = ,
+          sheet = true, titleinsheet = true, keywordsinsheet = true,
+          titlepage = false, abstract = false}
+\usepackage{geometry}
+\geometry{left=1in,right=0.75in,top=1in,bottom=1in}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Replace ABCDEF in the next line with your chosen problem
+% and replace 1111111 with your Team Control Number
+\newcommand{\Problem}{}
+\newcommand{\Team}{2602746}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{newtxtext,newtxmath} % Ensure consistent text and math fonts
+\usepackage{multicol}
+\usepackage{indentfirst}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{newtxmath} % must come after amsXXX
+\usepackage[numbers]{natbib}
+\bibliographystyle{unsrt}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{array} % 新增：增强表格控制
+\usepackage{ragged2e} % 新增：更好的文本对齐
+\usepackage{enumitem}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\captionsetup{skip=4pt}
+% Tighten paragraph + list spacing
+\setlength{\parskip}{0.1\baselineskip}
+\setlist[itemize]{topsep=0pt, itemsep=0pt, parsep=0pt, partopsep=0pt}
+\setlist[enumerate]{topsep=0pt, itemsep=0pt, parsep=0pt, partopsep=0pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}
+\usepackage{tocloft} % 自定义目录样式
+\renewcommand{\cfttoctitlefont}{\rmfamily\Large\bfseries} % 设置目录标题字体为 Times New Roman，保持原有格式和字号
+\renewcommand{\cftsecfont}{\rmfamily} % 设置章节标题字体为 Times New Roman，保持原有格式
+\renewcommand{\cftsubsecfont}{\rmfamily} % 设置子章节标题字体为 Times New Roman，保持原有格式
+\title{Our Work}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\graphicspath{{.}}  % Place your graphic files in the same directory as your main document
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif, .png}
+\begin{abstract}
+
+\end{abstract}
+
+\begin{keywords}
+
+\end{keywords}
+
+\makesheet
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Generate the Table of Contents, if it's needed.
+
+\begin{center}	
+\tableofcontents
+\end{center}     
+
+\newpage
+\pagestyle{fancy}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{page}{1}
+\section{Introduction}
+
+\subsection{Background}
+
+\subsection{Problem Restate}
+
+To ensure the planning of the cherry blossom viewing route is 
+completed whilst satisfying all constraints, after thorough 
+background reading, our model can be formulated as follows:\\
+\begin{itemize}
+    \item 
+\end{itemize}
+
+\subsection{Literature Review}
+\cite{zou2008application}.
+\subsection{Our Work}
+
+The task involves establishing a n-step model to plan a cherry blossom viewing route, which 
+mainly includes:\\
+\begin{enumerate}
+	\item
+\end{enumerate}
+To avoid complex descriptions and intuitively reflect our workflow, the flowchart is shown in \autoref{ourwork}.
+
+%\begin{figure}[H]
+%\centering
+%\includegraphics[width=13.5cm]{figures/flowchart.png}
+%\caption{The Flowchart of Our Work} \label{ourwork}
+%\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Assumptions and Justifications}
+
+To simplify the problem and make it convenient for us to simulate real-life 
+conditions, we make the following basic assumptions, each of which is properly 
+justified.\\
+
+\begin{itemize}
+\item {\bf Assumption 1:}\\
+Justification: \\
+\item {\bf Assumption 2:}\\
+Justification: \\
+\item {\bf Assumption 3:}\\
+Justification: \\
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Notations}
+The main variables and parameters while specific value of those parameters.
+will be given later are defined in \autoref{table2}\\
+\begin{table}[H]
+\centering
+\caption{Notations Used in this Paper}
+\label{table2}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{1.2cm}@{}}
+\toprule
+\textbf{Symbols} & \textbf{Description} & \textbf{Unit} \\
+\midrule
+
+$x_i, y_i$ & Standardized coordinates of the $i$-th scenic spot & \text{--} \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Small-scale Multi-constraint Path Optimisation}
+\subsection{Data Collection}
+
+\subsection{Data Processing}
+Perform coordinate standardisation using the following formula(\autoref{csp}).
+\begin{align}\label{csp}
+x_i = a \cdot (\text{lon}_i - \text{lon}_0), \quad y_i = a \cdot (\text{lat}_i - \text{lat}_0)
+\text{, where $a = 111$.}
+\end{align}
+
+\subsection{Multi-constraint Path Optimisation Model}
+
+\subsubsection{Model Solving and Path Deduction}
+
+\subsection{Cost Calculation and Results Analysis}
+\subsubsection{Transportation Cost Calculation Model}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Model Analysis and Sensitivity Analysis}
+In establishing the model, we identified numerous parameters that could potentially influence the final outcome. Among 
+these parameters, we selected the unit prices of high-speed rail and air travel as variables, as they directly impact 
+the final travel cost—accounting for a significant portion of the total expense—and thereby directly affect the 
+optimization level.\\
+
+\begin{table}[H]
+\centering
+\caption{Change Summary}
+\setlength{\tabcolsep}{4pt} 
+\begin{tabular}{@{}ccc@{}}
+\toprule
+\textbf{Price Change} & \textbf{Total Cost (Flight Rate Adjusted) (yuan)} & \textbf{Total Cost (HSR Rate Adjusted) (yuan)} \\
+\midrule
+-15\% & 9,687 & 9,982 \\
+-10\% & 9,832 & 9,990 \\
+-5\%  & 9,936 & 10,016 \\
+0\% (baseline) & 10,041 & 10,041 \\
++5\%  & 10,145 & 10,066 \\
++10\% & 10,249 & 10,091 \\
++15\% & 10,354 & 10,116 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Evaluation and Promotion of Model}
+
+\subsection{Strengths}
+
+\begin{enumerate}
+\item
+\item
+\item
+\end{enumerate}
+
+\subsection{Weaknesses and Possible improvements}
+
+\begin{enumerate}
+\item
+\item
+\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%\fontsize{15}{22}\selectfont
+\noindent
+\vspace{0.5em}
+\textbf{To}: XUNYING\\
+\vspace{0.5em}
+\textbf{From}: Team\#2602746\\
+\vspace{0.5em}
+\textbf{Subject}: Cherry Blossom Viewing Routes and Related Recommendations\\
+\vspace{0.5em}
+\textbf{Date}: Feburary 3, 2026\\
+\begin{multicols}{2}
+\noindent 
+Dear,\\
+
+\begin{flushright}
+Sincerely yours,\\
+Team\#2602476\\
+\end{flushright}
+\end{multicols}
+
+\newpage
+\bibliography{references}
+
+
+\newpage
+\section*{Appendices}
+%\lstinputlisting[language=matlab]{final.m}
+
+\newpage
+\newcounter{lastpage}
+\setcounter{lastpage}{\value{page}}
+\thispagestyle{empty} 
+
+\newpage
+\section*{Report on Use of AI}
+\begin{enumerate}
+\item Deepseek (Dec 1, 2025 version, DeepSeek-V3.2) 
+\begin{description}
+\item[Query1:] Please outline the common applications of average linkage hierarchical clustering for me.
+\item[Output:] 
+1. Balanced Performance\\
+The average linkage method strikes a balance between single linkage and complete linkage, avoiding both excessive sensitivity (such as the chaining effect prone in single linkage) and excessive conservatism (such as the tendency for compact yet disjoint clusters in complete linkage). This equilibrium renders it robust in practical applications.\\
+2. Robustness to Noise and Outliers\\
+Compared to single-linkage, average linkage exhibits reduced sensitivity to noise and outliers, yielding more compact and reasonable clustering outcomes. This property proves particularly valuable when processing real-world datasets.\\
+3. Adaptability to Cluster Shapes\\
+Average linkage can identify clusters of diverse shapes—including spherical, elliptical, and others—beyond merely compact spherical clusters. This versatility enhances the method's applicability.\\
+Application Scenarios\\
+Customer Segmentation: Stratifying clients in marketing based on consumption behaviour, demographic characteristics, etc.
+Text Clustering: Classifying documents by topic to uncover latent semantic structures\\
+Gene Expression Data Analysis: Identifying genes with similar expression patterns in bioinformatics\\
+Image Segmentation: Clustering pixels within images into distinct regions\\
+\end{description}
+\item Deepseek (Dec 1, 2025 version, DeepSeek-V3.2) 
+\begin{description}
+\item[Query2:] Please explain the spherical distance calculation within the TSP problem.
+\item[Output:] In the Travelling Salesman Problem (TSP), as city coordinates are typically expressed in latitude and longitude, the actual distance between cities must be calculated using the great-circle distance. We employ the Haversine formula, which accounts for the spherical geometry of the Earth and accurately calculates the shortest distance between two points on its surface.
+\end{description}
+\end{enumerate}
+
+% 重置页码
+\clearpage
+\setcounter{page}{\value{lastpage}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
