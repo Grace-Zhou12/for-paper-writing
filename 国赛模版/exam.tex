@@ -1,0 +1,492 @@
+% 使用 TeX 自带中文字体，避免不同电脑上的系统字体名称差异。
+\PassOptionsToPackage{fontset=fandol}{ctex}
+\documentclass[withoutpreface,bwprint]{cumcmthesis}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{newtxtext,newtxmath} % 统一正文与数学公式字体，使全文字体风格一致
+\usepackage{listings} % 用于插入和排版 Python、MATLAB、C 等程序代码
+\usepackage{etoolbox} % LaTeX 命令修改与补丁工具，用于修改已有命令或环境
+\usepackage{tikz} % 用于直接在 LaTeX 中绘制流程图、模型结构图和其他矢量图形
+\usepackage{xcolor} % 提供文字、表格、代码、TikZ 等的颜色支持
+\usepackage{url} % 用于正确排版和换行网页 URL
+\usepackage[framemethod=TikZ]{mdframed} % 创建可分页的文本框、定义框等，使用 TikZ 绘制边框
+\usepackage{makecell} % 增强表格单元格功能，支持单元格内换行和多行表头
+
+% 附录代码的统一样式：纯白代码区、四边框和左侧行号。
+\lstdefinestyle{appendixcode}{%
+  frame=none,
+  numbers=left,
+  numberstyle=\scriptsize\color{gray!75},
+  numbersep=7pt,
+  xleftmargin=2.2em,
+  xrightmargin=0.5em,
+  aboveskip=0pt,
+  belowskip=0pt,
+  backgroundcolor={},
+  showstringspaces=false,
+  basicstyle=\small\ttfamily,
+  keywordstyle=\color{blue!70!black},
+  commentstyle=\color{green!45!black},
+  stringstyle=\color{orange!75!black},
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=4
+}
+
+\newmdenv[
+  linewidth=0.75pt,
+  linecolor=gray!45,
+  topline=true,
+  bottomline=true,
+  leftline=true,
+  rightline=true,
+  backgroundcolor=white,
+  roundcorner=0pt,
+  innerleftmargin=0pt,
+  innerrightmargin=0pt,
+  innertopmargin=0.6pt,
+  innerbottommargin=0.6pt,
+  skipabove=0.25em,
+  skipbelow=0.8em,
+  splittopskip=0.6pt,
+  splitbottomskip=0.6pt
+]{appendixcodebox}
+
+% mcmthesis v6.3 (local class file) hard-codes red team number in \makesheet; patch it to black.
+\makeatletter
+\patchcmd{\makesheet}{\textcolor{red}{\MCM@opt@tcn}}{\textcolor{black}{\MCM@opt@tcn}}{}{}
+\makeatother
+
+\usepackage{multicol} % 支持将页面内容分成多个并行栏
+\usepackage{paracol} % 提供更灵活的多栏排版，并允许不同栏独立排版
+\usepackage{indentfirst} % 使章节标题后的第一段也自动首行缩进
+\usepackage{booktabs} % 用于制作规范的学术三线表
+\usepackage{caption} % 控制图片和表格标题的格式、间距等
+\usepackage{subcaption} % 用于制作带有 (a)、(b) 等编号的子图和子表
+\usepackage{fancyhdr} % 自定义页眉和页脚
+
+% Header rule (the horizontal line under the header) length is controlled by \headwidth in fancyhdr.
+% If you changed margins via geometry, \headwidth may not match \textwidth; force them consistent here.
+% You can tweak \headwidth (e.g., 0.95\textwidth) and offsets to fine-tune the visible line length.
+\setlength{\headwidth}{\textwidth}
+\fancyhfoffset[L]{1pt}
+\fancyhfoffset[R]{1pt}
+
+\usepackage{algorithm} % 提供算法浮动体
+\usepackage{amsmath,amssymb} % 模板类已提供数学环境；这里只补充常用数学符号
+\usepackage{algpseudocode} % 提供 algorithmic 环境及 \State、\While 等伪代码命令
+\usepackage{newtxmath} % must come after amsXXX
+\usepackage{gbt7714} % 按 GB/T 7714-2015 规范排版 BibTeX 参考文献
+
+% Better line breaking for long URLs (especially in bibliography)
+\usepackage{xurl} % 改善长网址的自动换行，尤其适用于参考文献中的 URL
+\Urlmuskip=0mu plus 1mu
+
+\bibliographystyle{gbt7714-numerical}
+
+\usepackage{graphicx} % 插入 JPG、PNG、PDF 等图片，并支持缩放、旋转等操作
+\usepackage{pdfpages} % 将完整的外部 PDF 页面插入当前论文
+\usepackage{multirow} % 允许表格中的一个单元格跨越多行
+\usepackage{tabularx} % 创建可自动调整列宽并适应页面宽度的表格
+\usepackage{float} % 增强图片、表格等浮动体的位置控制，并提供 [H]
+\usepackage{array} % 扩展 LaTeX 表格列格式，支持自定义列类型
+\usepackage{ragged2e} % 提供更好的左对齐、右对齐和两端对齐控制
+\usepackage{enumitem} % 自定义 itemize 和 enumerate 列表的编号、缩进和间距
+\usepackage{titlesec} % 自定义 section、subsection 等标题的格式和上下间距
+\usepackage{needspace} % 避免标题及其起始内容越过页脚
+
+% 公式交叉引用按实际编号显示，例如“公式 2”或“公式 5”。
+\crefformat{equation}{#2公式#1#3}
+
+% 定义自动伸缩宽度且左对齐的 L 表格列类型
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+
+% 统一增大三线表的行间距；可将 1.12 调大或调小。
+\renewcommand{\arraystretch}{1.12}
+
+% 解决 LaTeX 生成 PDF 时的书签/超链接字符串兼容问题
+\pdfstringdefDisableCommands{%
+  \def\leavevmode@ifvmode{}%
+  \def\kern#1{}%
+}
+
+\setlength{\textfloatsep}{4pt plus 2pt minus 2pt}
+\setlength{\intextsep}{4pt plus 2pt minus 2pt}
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\captionsetup{skip=2pt}
+
+% Tighten paragraph + list spacing
+% Paragraph spacing helper: adjust this ONE line to change paragraph spacing globally
+\newcommand{\SetParSkip}[1]{\setlength{\parskip}{#1}}
+\SetParSkip{0.35\baselineskip}
+
+% Heading spacing helpers: adjust section/subsection spacing independently
+% #1 is the space *after* the heading (heading -> first paragraph)
+\newcommand{\SetSectionAfterSkip}[1]{\titlespacing*{\section}{0pt}{0.2\baselineskip}{#1}}
+\newcommand{\SetSubsectionAfterSkip}[1]{\titlespacing*{\subsection}{0pt}{0.15\baselineskip}{#1}}
+
+% Defaults: keep heading-to-text spacing consistent with paragraph spacing
+\SetSectionAfterSkip{\parskip}
+\SetSubsectionAfterSkip{\parskip}
+
+% 标题不能孤立在页底：空间不足时由 LaTeX 自动转到下一页。
+% 这只影响分页，不改变正文版心、页边距或页脚位置。
+\pretocmd{\section}{\Needspace{5\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace{2\baselineskip}}{}{}
+\pretocmd{\subsubsection}{\Needspace{\baselineskip}}{}{}
+
+\setlist[itemize]{topsep=0pt, itemsep=0pt, parsep=0pt, partopsep=0pt}
+\setlist[enumerate]{topsep=0pt, itemsep=0pt, parsep=0pt, partopsep=0pt}
+
+\usepackage{tocloft} % 自定义目录格式，包括目录字体、缩进和各级标题之间的间距
+\makeatletter
+\setlength{\cftbeforesecskip}{0.30em}      % 一级标题前的间距
+\setlength{\cftbeforesubsecskip}{0.28em}   % 二级标题前的间距
+\setlength{\cftbeforesubsubsecskip}{0.26em} % 三级标题前的间距
+%\renewcommand{\cftsecfont}{\rmfamily}
+%\renewcommand{\cftsubsecfont}{\rmfamily}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\normalsize
+\makeatother
+
+\graphicspath{{.}}  % Place your graphic files in the same directory as your main document
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif, .png}
+
+% Increase spacing between the title and the Summary heading on the summary sheet.
+% Tune the two values below if you want more/less space.
+\makeatletter
+\def\make@abstract{%
+    \par\vspace*{-0.65cm}% space above Summary (i.e., title → Summary)
+    \begin{center}
+        \textbf{\abstractname}
+    \end{center}
+    \vspace*{-0.4cm} % space below Summary (Summary → body)
+    \@abstract\par
+}
+\makeatother
+
+\title{全国大学生数学建模竞赛模板}
+
+
+\begin{document}
+\maketitle
+% 摘要页不显示页码；正文从摘要结束后重新从第 1 页开始编号。
+\thispagestyle{empty}
+\begin{abstract}
+\begin{enumerate}
+    \item  本文通过研究。。。，提出了。。。
+    \item  本文首先给出了。。。的函数，同时对。。。进行了详细的说明，另外引入了。。。来判断。。。是否有效，使得表达更加简洁易懂。
+\end{enumerate}
+
+
+\textbf{对于问题一，}
+\begin{enumerate}
+    \item 该方案首先基于。。。，设计了一个模型，给出了直接计算。。。的公式。
+    \item 本问已经给定了。。。的初始参数，代入模型。。。进行。。。即可得到。。。本文首先证明了。。。，之后通过。。。求得了。。。此外，本文通过。。。进行敏感度分析，发现当。。。（精度），能够兼顾求解的准确性和效率。
+\end{enumerate}
+
+
+\textbf{对于问题二，}
+
+\textbf{对于问题三，}
+
+\textbf{对于问题四，}
+
+\begin{enumerate}
+    \item 一句话陈述了本文研究的一般问题
+    \item 一两句话总结了整体方法、主要结果和结论
+    \item 一两句话回到一般背景，解释比以前的工作取得的进展，并概述针对各个问题展开介绍“方法+结果+优势”，例如我们可以说说自己避免了哪些问题，误差值是多少云云
+\end{enumerate}
+
+\keywords{问题一方法  \quad 问题一优化方法  }
+
+\end{abstract}
+\setcounter{page}{1}
+\pagestyle{plain}
+
+\section{问题重述}
+
+\subsection{问题背景}
+
+\textbf{优化类：}  
+（相关定理和关键词的解读）\\
+本文针对。。。这一情境设计问题，在。。。（背景条件）给定的条件下，需要综合考虑。。。（可变量）对不同情况下。。。（因变量）的优化，以达到。。。这一目标。
+
+\subsection{问题提出}
+
+基于上述背景，本文建立数学模型解决下列问题：
+
+\textbf{问题1：}  
+
+\textbf{问题2：}  
+
+\textbf{问题3：} 
+
+\textbf{问题4：}  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{问题分析}
+
+\subsection{问题一分析}
+对于问题一，
+
+\subsection{问题二分析}	
+对于问题二，
+
+\subsection{问题三分析}
+对于问题三，
+
+\subsection{问题四分析}
+对于问题四，
+
+如\cref{fig:sample-figure}，这是一只猫。
+\begin{figure}[H]%用H强制固定浮动体位置
+\centering
+\includegraphics[width=6cm]{../figure/一只猫}
+\caption{一直猫}
+\label{fig:sample-figure}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\section{模型假设}
+本文模型假设主要包括：
+
+\begin{itemize}[itemindent=2em]
+\item 假设1
+\item 假设2
+\item 假设3
+\item 假设4
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\section{符号说明}
+\begin{table}[H]
+\centering
+\caption{符号说明}
+\label{tab:symbols}
+\begin{tabularx}{0.98\textwidth}{@{}>{\centering\arraybackslash}p{0.24\textwidth} >{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{0.14\textwidth}@{}}
+    \toprule
+    \textbf{符号} & \textbf{含义} & \textbf{单位} \\\midrule
+    $I$ & 机器人集合，索引为 $i$ & -- \\
+    $J$ & 任务集合，索引为 $j,l$ & -- \\
+    $R$ & 充电站集合，索引为 $r$ & -- \\
+    $H$ & 共享资源集合，索引为 $h$ & -- \\
+    $\Omega$ & 运行情景集合，索引为 $\omega$ & -- \\
+    $x_{ij}$ & 机器人 $i$ 是否参与任务 $j$ 的0--1变量 & 0--1 \\
+    $u_{ijkl}$ & 机器人 $i$ 执行任务 $j$ 后执行任务 $l$ 的顺序变量 & 0--1 \\
+    $s_j,c_j,d_j$ & 任务 $j$ 的开始时间、完成时间和延期量 & min \\
+    $e_{it}$ & 机器人 $i$ 在事件 $t$ 后的电量 & kWh \\
+    $q_{ir}$ & 机器人 $i$ 在充电站 $r$ 获得的电量 & kWh \\
+    $y_B$ & 是否启用操作员B的0--1变量 & 0--1 \\
+    $a_{ij}$ & 机器人 $i$ 对任务 $j$ 的静态可行参数 & -- \\
+    \makecell[c]{$work_j,release_j,$\\$due_j$} & 任务工作时间、释放时刻和截止时刻 & min \\
+    $load_j$ & 任务负载 & kg \\
+    $B_i,\underline e_i,e_{i0}$ & 电池容量、最低电量和初始电量 & kWh \\
+    $\alpha_i,\rho_i,\rho_r$ & 能耗率、机器人充电速率和站点充电速率 & kWh/min \\
+    $W_i$ & 机器人累计作业时间 & min \\
+    $P^{max}$ & 系统总充电功率上限，本文设为0.20 & kWh/min \\
+    $p_\omega$ & 情景 $\omega$ 的发生概率 & -- \\\bottomrule
+\end{tabularx}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\section{模型建立与求解}
+
+\subsection{问题一模型的建立与求解}
+
+\subsubsection{决策变量与静态资格}
+
+\cref{eq1}
+\begin{center}
+
+\begin{equation}\label{eq1}
+\begin{aligned}
+&\min Z = X_1 + X_2 \\
+&\text{s.t.} \quad 
+\left\{
+\begin{aligned}
+A x &\leq b \\
+A_{\mathrm{eq}} x &= b_{\mathrm{eq}} \\
+lb &\leq x \leq ub
+\end{aligned}
+\right.
+\end{aligned}
+\end{equation}
+\end{center}
+
+\begin{algorithm}[H]
+\caption{Optimal Order Quantity Simulation for Newsvendor Problem}
+\label{alg:newsvendor}
+\begin{algorithmic}[1]
+\Require Unit price $a$, unit cost $b$, Poisson parameter $\lambda$, number of simulations $N$
+\Ensure Optimal order quantity $u^*$
+\State \textbf{Initialization:}
+\State $M_{\text{prev}} \gets 0$ \Comment{Expected profit for order quantity $u=0$}
+\State $u \gets 1$ \Comment{Start testing from order quantity $u=1$}
+\While{True}
+    \State $\text{total\_profit} \gets 0$
+    \For{$i \gets 1$ \textbf{to} $N$} \Comment{Simulation phase}
+        \State Generate random demand $X \sim \text{Poisson}(\lambda)$
+        \State $\text{sales} \gets \min(X, u)$
+        \State $\text{profit} \gets a \times \text{sales} - b \times u$
+        \State $\text{total\_profit} \gets \text{total\_profit} + \text{profit}$
+    \EndFor
+    \State $M_{\text{current}} \gets \text{total\_profit} / N$ \Comment{Calculate average expected profit}
+    \If{$condition$}
+        \State $ $ \Comment{Optimal quantity found}
+        \State \textbf{break} \Comment{Exit the loop}
+    \Else
+        \State $M_{\text{prev}} \gets M_{\text{current}}$ \Comment{Update previous profit}
+        \State $u \gets u + 1$ \Comment{Test next order quantity}
+    \EndIf
+\EndWhile
+\Statex
+\State \textbf{return} $u^*$
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{约束与目标函数}
+
+\subsubsection{求解结果}
+
+\subsection{问题二模型的建立与求解}
+
+首先，我们使用了\cref{capet}。
+\begin{equation}\label{capet}
+CapE(t)=\frac{Q_{e,max}}{1+e^{\!\left(-k_e\,(t-t_{e0})\right)}}
+\end{equation}
+
+\subsubsection{时间窗与任务不重叠}
+
+\subsubsection{协同与能量状态}
+
+\subsubsection{目标函数与正常调度结果}
+
+\subsection{问题三模型的建立与求解}
+
+\subsubsection{前置关系与共享资源}
+
+\subsubsection{四类情景}
+
+\subsubsection{情景结果}
+
+\subsubsection{情景恢复的求解流程}
+
+\subsection{问题四模型的建立与求解}
+
+\subsubsection{分时电价与充电功率模型}
+
+\subsubsection{操作员覆盖与三种策略}
+
+\subsubsection{统一基准设置}
+
+\subsubsection{策略结果}
+
+\subsubsection{最优策略存在性}
+
+\subsubsection{参数检查与结果一致性}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\section{敏感性分析与稳健性检验}
+
+\subsection{扰动设置}
+
+\subsection{结果与解释}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\section{模型评价与推广}
+
+
+\subsection{模型优点}
+\begin{itemize}[itemindent=2em]
+\item 优点1
+\item 优点2
+\item 优点3
+\end{itemize}
+
+\subsection{模型缺点}
+\begin{itemize}[itemindent=2em]
+\item 缺点1
+\item 缺点2
+\end{itemize}
+
+\subsection{未来推广}
+\begin{itemize}[itemindent=2em]
+\item 展望1
+\item 展望2
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\section{AI工具使用声明}
+
+本参赛队在竞赛过程中使用了AI工具，主要用于代码调试和论文语言润色，详细使用情况见支撑材料。
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%% 参考文献
+\nocite{*}
+\bibliography{references}
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 附录
+\begin{appendices}
+% 附录中的表格重新从“表 1”开始编号，不承接正文表格编号。
+\setcounter{table}{0}
+\renewcommand{\thetable}{\arabic{table}}
+    
+\section{文件列表}
+
+\begin{table}[H]
+\centering
+\caption{支撑文件目录}
+\begin{tabularx}{0.98\textwidth}{@{}>{\centering\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.6\textwidth}@{}}
+\toprule
+支撑文件名称   & 文件内容 \\
+\midrule
+P1.py & 问题一程序代码 \\
+P2.py & 问题二程序代码 \\
+P3.py & 问题三程序代码 \\
+P4.py & 问题四程序代码 \\
+\bottomrule
+\end{tabularx}
+\label{tab:支撑文件目录}
+\end{table}
+
+\vspace{0.8em}
+
+\begin{table}[H]
+\centering
+\caption{附录目录}
+\begin{tabularx}{0.98\textwidth}{@{}>{\centering\arraybackslash}p{0.4\textwidth} >{\centering\arraybackslash}p{0.6\textwidth}@{}}
+\toprule
+文件名   & 功能描述 \\
+\midrule
+P1.py & 问题一程序代码 \\
+P2.py & 问题二程序代码 \\
+P3.py & 问题三程序代码 \\
+P4.py & 问题四程序代码 \\
+\bottomrule
+\end{tabularx}
+\label{tab:附录目录}
+\end{table}
+
+\section{代码}
+
+\noindent\normalsize 附录 1：TOPSIS 综合评价程序（完整运行入口）\par
+
+
+\begin{appendixcodebox}
+\lstinputlisting[style=appendixcode,language=matlab]{../代码/topsis.m}
+\end{appendixcodebox}
+
+\end{appendices}
+
+\end{document} 
